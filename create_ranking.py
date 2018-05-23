@@ -29,15 +29,24 @@ def get_ids(soup):
 		ids.append(row.div['data-tconst'])
 	return ids
 
-def write_ranking_to_file(movies, ids):
+def get_years(soup):
+	years = []
+	years_rows = soup.find_all('span', class_="secondaryInfo")
+	for row in years_rows:
+		number = row.get_text()[1:5]
+		years.append(number)
+	return years
+
+def write_ranking_to_file(movies, years, ids):
 	with open('ranking.csv', 'w') as csv_file:
 		csv_writer = writer(csv_file)
-		csv_writer.writerow(['rank', 'title', 'id'])
-		for rank, movie, id in zip(range(1, len(movies)+1), movies, ids):
-			csv_writer.writerow([rank, movie, id])
+		csv_writer.writerow(['rank', 'title', 'year', 'id'])
+		for rank, movie, year, id in zip(range(1, len(movies)+1), movies, years, ids):
+			csv_writer.writerow([rank, movie, year, id])
 
 
 data = fetch_data()
 movies = get_ranking(data)
 ids = get_ids(data)
-write_ranking_to_file(movies, ids)
+years = get_years(data)
+write_ranking_to_file(movies, years, ids)

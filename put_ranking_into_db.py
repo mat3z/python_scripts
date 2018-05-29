@@ -14,7 +14,8 @@ with open('ranking.csv') as csv_file:
 	for row in csv_reader:
 		imdbRank = row[0]
 		title = row[1]
-		year = row[2]
-		imdbId = row[3]
-		movie = {"imdbRank": imdbRank, "title": title, "year": year, "imdbId": imdbId}
+		imageUrl = '' if row[2] == 'blank' else row[2]
+		year = row[3]
+		imdbId = row[4]
+		movie = {"imdbRank": imdbRank, "title": title, "imageUrl": imageUrl, "year": year, "imdbId": imdbId}
 		movies.insert_one(movie)
